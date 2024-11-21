@@ -1,1 +1,2 @@
 11/19: Start Synder Algorithm - Finish scenes 1 & 2 - Start scene 3 with moving Bij values
+11/21: work on scene 3 - finished diagonal movement of Bij - work on computation of Cij values 
