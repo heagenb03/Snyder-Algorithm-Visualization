@@ -76,12 +76,93 @@ class Snyder(Scene):
         
         """
         Scene 3
-            1. Move Bij values to corresponding Bij values
+            1. Move corresponding Bij values across diagonally to corresponding Bij values
+            2. Compute corresponding Cij values
+            3. Move Bij values up/down based on the row
         """
         
         #1
-        move_animations = scene3.moveBValues(matrixC_scene2)
+        move_animations = scene3.moveBValuesDiagonally(matrixC_scene2)
         
-        print(scene3.entry_b_values)
         self.play(*move_animations)
         self.wait(1)
+        
+        shift_count = 0
+        while shift_count < MATRIX_ROW_COL_CT:
+            total_intial_fade_in_animations = []
+            total_final_fade_in_animations = []
+            total_intial_move_animations = []
+            total_final_move_animations = []
+            total_fade_out_animations = []
+            scene3.temp_computed_c_values = []
+            
+            #2
+            for row in range(MATRIX_ROW_COL_CT):
+                col = shift_count + row
+                
+                if col >= MATRIX_ROW_COL_CT:
+                    col = abs(MATRIX_ROW_COL_CT - col)
+
+                move_entry_pos = (row * MATRIX_ROW_COL_CT) + col
+                row_slice = slice(row * MATRIX_ROW_COL_CT, MATRIX_ROW_COL_CT + (row * MATRIX_ROW_COL_CT))
+                
+                intial_fade_in_animations, final_fade_in_animations, intial_move_animations, final_move_animations, fade_out_animations = scene3.computeCValues(matrixC_scene2, move_entry_pos, row_slice)
+                total_intial_fade_in_animations.extend(intial_fade_in_animations)
+                total_final_fade_in_animations.extend(final_fade_in_animations)
+                total_intial_move_animations.extend(intial_move_animations)
+                total_final_move_animations.extend(final_move_animations)
+                total_fade_out_animations.extend(fade_out_animations)
+                
+            self.play(*total_intial_fade_in_animations)
+            self.wait(1)
+            self.play(*total_intial_move_animations)
+            self.wait(0.15)
+            self.play(*total_final_fade_in_animations,
+                    *total_fade_out_animations)
+            self.wait(1)
+            self.play(*total_final_move_animations)
+            self.wait(2)
+            
+            #3
+            total_move_animations = []
+            total_fade_out_animations = []
+            
+            for row in range(MATRIX_ROW_COL_CT):
+                col = shift_count + row
+                
+                if col >= MATRIX_ROW_COL_CT:
+                    col = abs(MATRIX_ROW_COL_CT - col)
+
+                move_entry_pos = (row * MATRIX_ROW_COL_CT) + col
+                row_slice = slice(row * MATRIX_ROW_COL_CT, MATRIX_ROW_COL_CT + (row * MATRIX_ROW_COL_CT))
+                
+                if col == 0:
+                    move_animations, fade_out_animations = scene3.moveEnteriesAcrossRight(matrixC_scene2, move_entry_pos)
+                    total_move_animations.extend(move_animations)
+                    total_fade_out_animations.extend(fade_out_animations)
+                
+                """
+                elif col == MATRIX_ROW_COL_CT - 1:
+                    move_animations, fade_out_animations = scene3.moveEnteriesAcrossLeft(matrixC_scene2, move_entry_pos)
+                    total_move_animations.extend(move_animations)
+                    total_fade_out_animations.extend(fade_out_animations)
+                    
+                else:
+                    move_animations, fade_out_animations = scene3.moveEnteriesAcrossRightAndLeft(matrixC_scene2, move_entry_pos, col)
+                    total_move_animations.extend(move_animations)
+                    total_fade_out_animations.extend(fade_out_animations)
+                """
+                
+            self.play(*total_move_animations)
+            self.wait(1)
+            self.play(*total_fade_out_animations)
+            self.wait(1)
+            
+            #4
+            move_animations = scene3.moveBvaluesUp(matrixC_scene2, shift_count)
+            
+            self.play(*move_animations)
+            self.wait(1)
+            
+            shift_count += 1
+            
