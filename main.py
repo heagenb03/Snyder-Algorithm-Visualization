@@ -93,8 +93,10 @@ class Snyder(Scene):
             total_final_fade_in_animations = []
             total_intial_move_animations = []
             total_final_move_animations = []
+            total_intial_fade_out_animations = []
             total_fade_out_animations = []
             scene3.temp_computed_c_values = []
+            scene3.text_c_value_list = []
             
             #2
             for row in range(MATRIX_ROW_COL_CT):
@@ -106,26 +108,29 @@ class Snyder(Scene):
                 move_entry_pos = (row * MATRIX_ROW_COL_CT) + col
                 row_slice = slice(row * MATRIX_ROW_COL_CT, MATRIX_ROW_COL_CT + (row * MATRIX_ROW_COL_CT))
                 
-                intial_fade_in_animations, final_fade_in_animations, intial_move_animations, final_move_animations, fade_out_animations = scene3.computeCValues(matrixC_scene2, move_entry_pos, row_slice)
+                intial_fade_in_animations, final_fade_in_animations, intial_move_animations, final_move_animations, intial_fade_out_animations, final_fade_out_animations = scene3.computeCValues(matrixC_scene2, move_entry_pos, row_slice)
                 total_intial_fade_in_animations.extend(intial_fade_in_animations)
                 total_final_fade_in_animations.extend(final_fade_in_animations)
                 total_intial_move_animations.extend(intial_move_animations)
                 total_final_move_animations.extend(final_move_animations)
-                total_fade_out_animations.extend(fade_out_animations)
+                total_intial_fade_out_animations.extend(intial_fade_out_animations)
+                total_fade_out_animations.extend(final_fade_out_animations)
                 
             self.play(*total_intial_fade_in_animations)
             self.wait(1)
             self.play(*total_intial_move_animations)
             self.wait(0.15)
             self.play(*total_final_fade_in_animations,
-                    *total_fade_out_animations)
+                    *total_intial_fade_out_animations)
             self.wait(1)
             self.play(*total_final_move_animations)
             self.wait(2)
             
             #3
-            total_move_animations = []
-            total_fade_out_animations = []
+            total_intial_move_animations = []
+            total_final_move_animations = []
+            total_intial_fade_out_animations = []
+            total_transform_animations = []
             
             for row in range(MATRIX_ROW_COL_CT):
                 col = shift_count + row
@@ -137,23 +142,33 @@ class Snyder(Scene):
                 row_slice = slice(row * MATRIX_ROW_COL_CT, MATRIX_ROW_COL_CT + (row * MATRIX_ROW_COL_CT))
                 
                 if col == 0:
-                    move_animations, fade_out_animations = scene3.moveEnteriesAcrossRight(matrixC_scene2, move_entry_pos)
-                    total_move_animations.extend(move_animations)
-                    total_fade_out_animations.extend(fade_out_animations)
+                    intial_move_animations, final_move_animations, transform_animations, fade_out_animations = scene3.moveEnteriesAcrossRightAndCompute(matrixC_scene2, move_entry_pos, row)
+                    total_intial_move_animations.extend(intial_move_animations)
+                    total_final_move_animations.extend(final_move_animations)
+                    total_transform_animations.extend(transform_animations)
+                    total_intial_fade_out_animations.extend(fade_out_animations)
                 
-                """
+                
                 elif col == MATRIX_ROW_COL_CT - 1:
-                    move_animations, fade_out_animations = scene3.moveEnteriesAcrossLeft(matrixC_scene2, move_entry_pos)
-                    total_move_animations.extend(move_animations)
-                    total_fade_out_animations.extend(fade_out_animations)
-                    
-                else:
-                    move_animations, fade_out_animations = scene3.moveEnteriesAcrossRightAndLeft(matrixC_scene2, move_entry_pos, col)
-                    total_move_animations.extend(move_animations)
-                    total_fade_out_animations.extend(fade_out_animations)
-                """
+                    intial_move_animations, final_move_animations, transform_animations, fade_out_animations = scene3.moveEnteriesAcrossLeftAndCompute(matrixC_scene2, move_entry_pos, row)
+                    total_intial_move_animations.extend(intial_move_animations)
+                    total_final_move_animations.extend(final_move_animations)
+                    total_transform_animations.extend(transform_animations)
+                    total_intial_fade_out_animations.extend(fade_out_animations)
                 
-            self.play(*total_move_animations)
+                else:
+                    intial_move_animations, final_move_animations, transform_animations, fade_out_animations = scene3.moveEnteriesAcrossRightAndLeftAndCompute(matrixC_scene2, move_entry_pos, col, row)
+                    total_intial_move_animations.extend(intial_move_animations)
+                    total_final_move_animations.extend(final_move_animations)
+                    total_transform_animations.extend(transform_animations)
+                    total_intial_fade_out_animations.extend(fade_out_animations)
+                
+            self.play(*total_intial_move_animations)
+            self.wait(1)
+            self.play(*total_final_move_animations)
+            self.wait(1)
+            self.play(*total_transform_animations,
+                    *total_intial_fade_out_animations)
             self.wait(1)
             self.play(*total_fade_out_animations)
             self.wait(1)
