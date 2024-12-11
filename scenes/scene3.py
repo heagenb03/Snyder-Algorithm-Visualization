@@ -13,6 +13,14 @@ class Scene3:
         self.entry_a_values = np.array(MATRIX_A_NUMBERS.copy())
         
     def moveBValuesDiagonally(self, matrix):
+        """Moves correspodning Bij values across diagonally to corresponding Bij values
+
+        Args:
+            matrix (VGroup): matrix used for the scene
+
+        Returns:
+            list: move animations that move the Bij values diagonally
+        """
         move_animations = []
         
         for row in range(MATRIX_ROW_COL_CT):
@@ -67,7 +75,7 @@ class Scene3:
             matrix (VGroup): Matrix used in the scene
 
         Return:
-            list: List of animations that move the Bij values up/down
+            list: List of move animations that move the Bij values up/down
         """
         move_animations = []
         temp_b_values = self.entry_b_values.copy()
@@ -92,6 +100,19 @@ class Scene3:
         return move_animations
     
     def computeTempCValues(self, matrix):
+        """Compute temporary C values for all Cij values
+
+        Args:
+            matrix (VGroup): matrix used in the scene
+
+        Returns:
+            list: intial fade in animations for multi sign
+            list: final fade in animations for computed temp C values
+            list: intial move animations for Aij and Bij values to multi sign
+            list: final move animations for computed temp C values to final position
+            list: intial fade out animations for multi sign, Aij and Bij values
+            list: final fade out animations for computed temp C values
+        """
         intial_move_animations = []
         final_move_animations = []
         intial_fade_in_animations = []
@@ -129,6 +150,18 @@ class Scene3:
         return intial_fade_in_animations, final_fade_in_animations, intial_move_animations, final_move_animations, intial_fade_out_animations, final_fade_out_animations
             
     def computeRowForFirstColumn(self, matrix, pos, row):
+        """Compute row-wide reduction for first column of Cij values
+
+        Args:
+            matrix (VGroup): matrix used in the scene
+            pos (int): position of the Cij value being computed in the matrix
+            row (int): row of the Cij value being computed in the matrix
+
+        Returns:
+            list: move animations for each temp Cij value to final Cij value position
+            list: transform animations to add reach temp Cij value to create final Cij value
+            list: fade out animations for each temp Cij value
+        """
         move_animations = []
         transform_animations = []
         fade_out_animations = []
@@ -151,6 +184,18 @@ class Scene3:
         return move_animations, transform_animations, fade_out_animations
     
     def computeRowForLastColumn(self, matrix, pos, row):
+        """Compute row-wide reduction for the last column of Cij values
+
+        Args:
+            matrix (VGroup): matrix used in the scene
+            pos (int): position of the Cij value being computed in the matrix
+            row (int): row of the Cij value being computed in the matrix
+
+        Returns:
+            list: move animations for each temp Cij value to final Cij value position
+            list: transform animations to add reach temp Cij value to create final Cij value
+            list: fade out animations for each temp Cij value
+        """
         move_animations = []
         transform_animations = []
         fade_out_animations = []
@@ -173,6 +218,19 @@ class Scene3:
         return move_animations, transform_animations, fade_out_animations
     
     def computeRowForOtherColumns(self, matrix, pos, row, col):
+        """Compute row-wide reduction for the other column(s) of Cij values
+
+        Args:
+            matrix (VGroup): matrix used in the scene
+            pos (int): position of the Cij value being computed in the matrix
+            row (int): row of the Cij value being computed in the matrix
+            col (int): column of the Cij value being computed in the matrix
+
+        Returns:
+            list: move animations for each temp Cij value to final Cij value position
+            list: transform animations to add reach temp Cij value to create final Cij value
+            list: fade out animations for each temp Cij value
+        """
         move_animations = []
         transform_animations = []
         fade_out_animations = []
