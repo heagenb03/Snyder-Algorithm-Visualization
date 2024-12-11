@@ -129,7 +129,7 @@ class Scene3:
                 self.text_c_value_list.append(temp_c_value)
                 
                 aij_value = Text(str(self.entry_a_values[entry]), color=MATRIX_A_COLOR, font_size=MATRIX_FONT_SIZE).move_to(matrix[entry][MATRIX_C_ENTRY_A_VGROUP].get_center())
-                bij_value = Text(str(self.entry_b_values[entry]), color=MATRIX_B_COLOR, font_size=MATRIX_FONT_SIZE).move_to(matrix[entry][MATRIX_C_ENTRY_A_VGROUP].get_center()).shift(RIGHT * 0.5)
+                bij_value = Text(str(self.entry_b_values[entry]), color=MATRIX_B_COLOR, font_size=MATRIX_FONT_SIZE).move_to(matrix[entry][MATRIX_C_ENTRY_A_VGROUP].get_center()).shift(RIGHT * 0.65)
                 multi_sign = MathTex('\\times', color=MATRIX_A_COLOR).scale(0.65).move_to(matrix[entry][MATRIX_C_BOX_VGROUP].get_center())
                 
                 intial_fade_in_animations.append(FadeIn(multi_sign))
