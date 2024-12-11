@@ -73,8 +73,8 @@ class Intial:
         
         first_entry = Text(str(first_num), font_size=MATRIX_FONT_SIZE, color=first_txt_color, fill_opacity=MATRIX_TEXT_OPACITY)
         second_entry = Text(str(second_num), font_size=MATRIX_FONT_SIZE, color=second_txt_color, fill_opacity=MATRIX_TEXT_OPACITY)
-        third_entry = Text(str(third_num), font_size=MATRIX_FONT_SIZE, color=MATRIX_BG_COLOR, fill_opacity=0.0) #Hidden value for Aij thats created for positioning
-        fourth_entry = Text(str(fourth_num), font_size=MATRIX_FONT_SIZE, color=third_txt_color, fill_opacity=MATRIX_TEXT_OPACITY)
+        third_entry = Text(str(third_num), font_size=MATRIX_FONT_SIZE, color=MATRIX_BG_COLOR, fill_opacity=0.0) #Hidden value for Temp Cij thats created for positioning
+        fourth_entry = Text(str(fourth_num), font_size=MATRIX_FONT_SIZE, color=third_txt_color, fill_opacity=0.0) #Hidden value for Computed C value thats created for positioning
         
         first_entry.align_to(matrix_box, UL).shift(DOWN * VERT_ALINGMENT + RIGHT * HORIZONTAL_ALINGMENT)
         second_entry.align_to(matrix_box, UR).shift(DOWN * VERT_ALINGMENT + LEFT * HORIZONTAL_ALINGMENT)
@@ -119,7 +119,7 @@ class Intial:
             offset = np.array([-0.32, 0.28, 0])
         elif vgroup == MATRIX_C_ENTRY_B_VGROUP:
             offset = np.array([0.32, 0.28, 0])
-        elif vgroup == MATRIX_C_ENTRY_CIJ_MOVED_VGROUP: 
+        elif vgroup == MATRIX_C_ENTRY_TEMP_C_VGROUP: 
             offset = np.array([-0.32, -0.28, 0])
         elif vgroup == MATRIX_C_ENTRY_COMPUTED_C_VGROUP:
             offset = np.array([0.32, -0.28, 0])

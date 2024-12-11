@@ -61,7 +61,7 @@ class Scene2:
         """
         adjust_animations = []
         for entry in range(MATRIX_ROW_COL_CT**2):
-            numbers = matrixC[entry][MATRIX_C_ENTRY_CIJ_MOVED_VGROUP]
-            adjust_animations.append(numbers.animate.move_to(self.intial.getTargetPosition(matrixC, entry, MATRIX_C_ENTRY_CIJ_MOVED_VGROUP)))
+            numbers = matrixC[entry][MATRIX_C_ENTRY_TEMP_C_VGROUP]
+            adjust_animations.append(numbers.animate.move_to(self.intial.getTargetPosition(matrixC, entry, MATRIX_C_ENTRY_TEMP_C_VGROUP)))
             
         return adjust_animations
