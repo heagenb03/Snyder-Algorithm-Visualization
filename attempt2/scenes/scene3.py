@@ -1,4 +1,4 @@
-from manim import ArcBetweenPoints, MoveAlongPath, Text, MathTex, FadeIn, FadeOut, Transform, PI, ORIGIN, RIGHT
+from manim import ArcBetweenPoints, MoveAlongPath, Text, MathTex, FadeIn, FadeOut, Transform, PI, ORIGIN, RIGHT, LEFT
 import numpy as np
 from constants import *
 from intial import Intial
@@ -118,7 +118,7 @@ class Scene3:
                 
                 final_fade_in_animations.append(FadeIn(temp_c_value))
                 
-                final_move_animations.append(temp_c_value.animate.move_to(matrix[entry][MATRIX_C_ENTRY_CIJ_MOVED_VGROUP].get_center()))
+                final_move_animations.append(temp_c_value.animate.move_to(matrix[entry][MATRIX_C_ENTRY_TEMP_C_VGROUP].get_center()))
                 
                 intial_fade_out_animations.append(FadeOut(multi_sign))
                 intial_fade_out_animations.append(FadeOut(aij_value))
@@ -128,23 +128,78 @@ class Scene3:
         
         return intial_fade_in_animations, final_fade_in_animations, intial_move_animations, final_move_animations, intial_fade_out_animations, final_fade_out_animations
             
-    def computeRowForFirstColumn(self, matrix, pos):
-        intial_move_animations = []
-        final_move_animations = []
+    def computeRowForFirstColumn(self, matrix, pos, row):
+        move_animations = []
         transform_animations = []
         fade_out_animations = []
         
-        computed_c_value = matrix[pos][MATRIX_C_ENTRY_CIJ_MOVED_VGROUP]
+        computed_c_value = self.temp_computed_c_values[pos]
+        arcPath = ArcBetweenPoints(self.text_c_value_list[pos].get_center(), matrix[pos][MATRIX_C_ENTRY_COMPUTED_C_VGROUP].get_center(), angle=PI/2)
+        move_animations.append(MoveAlongPath(self.text_c_value_list[pos], arcPath))
         for col in range(MATRIX_ROW_COL_CT - 1, 0, -1):
-            arcPath = ArcBetweenPoints(self.text_c_value_list[col].get_center(), matrix[pos][MATRIX_C_ENTRY_CIJ_MOVED_VGROUP].get_center(), angle=PI/2)
-            intial_move_animations.append(MoveAlongPath(self.text_c_value_list[col], arcPath))
-            computed_c_value += self.temp_computed_c_values[col] 
+            moving_point_pos = col + (MATRIX_ROW_COL_CT * row)
+            arcPath = ArcBetweenPoints(self.text_c_value_list[moving_point_pos].get_center(), matrix[pos][MATRIX_C_ENTRY_COMPUTED_C_VGROUP].get_center(), angle=PI/2)
+            move_animations.append(MoveAlongPath(self.text_c_value_list[moving_point_pos], arcPath))
             
-            final_move_animations.append(matrix[pos][MATRIX_C_ENTRY_CIJ_MOVED_VGROUP].animate.move_to(matrix[pos][MATRIX_C_ENTRY_COMPUTED_C_VGROUP].get_center()))
+            computed_c_value += self.temp_computed_c_values[moving_point_pos] 
             
-            fade_out_animations.append(FadeOut(self.text_c_value_list[col]))
+            fade_out_animations.append(FadeOut(self.text_c_value_list[moving_point_pos]))
             
-        transform_animations.append(Transform(matrix[pos][MATRIX_C_ENTRY_CIJ_MOVED_VGROUP], computed_c_value))
+        final_computed_c_value = Text(str(computed_c_value), color=C_VALUES_COLOR, font_size=MATRIX_FONT_SIZE).move_to(matrix[pos][MATRIX_C_ENTRY_COMPUTED_C_VGROUP].get_center())
+        transform_animations.append(Transform(matrix[pos][MATRIX_C_ENTRY_COMPUTED_C_VGROUP], final_computed_c_value))
+        
+        return move_animations, transform_animations, fade_out_animations
+    
+    def computeRowForLastColumn(self, matrix, pos, row):
+        move_animations = []
+        transform_animations = []
+        fade_out_animations = []
+        
+        computed_c_value = self.temp_computed_c_values[pos]
+        arcPath = ArcBetweenPoints(self.text_c_value_list[pos].get_center(), matrix[pos][MATRIX_C_ENTRY_COMPUTED_C_VGROUP].get_center(), angle=PI/2)
+        move_animations.append(MoveAlongPath(self.text_c_value_list[pos], arcPath))
+        for col in range(MATRIX_ROW_COL_CT - 1):
+            moving_point_pos = col + (MATRIX_ROW_COL_CT * row)
+            arcPath = ArcBetweenPoints(self.text_c_value_list[moving_point_pos].get_center(), matrix[pos][MATRIX_C_ENTRY_COMPUTED_C_VGROUP].get_center(), angle=PI/2)
+            move_animations.append(MoveAlongPath(self.text_c_value_list[moving_point_pos], arcPath))
             
-        return intial_move_animations, final_move_animations, transform_animations, fade_out_animations
+            computed_c_value += self.temp_computed_c_values[moving_point_pos] 
+            
+            fade_out_animations.append(FadeOut(self.text_c_value_list[moving_point_pos]))
+        
+        final_computed_c_value = Text(str(computed_c_value), color=C_VALUES_COLOR, font_size=MATRIX_FONT_SIZE).move_to(matrix[pos][MATRIX_C_ENTRY_COMPUTED_C_VGROUP].get_center())
+        transform_animations.append(Transform(matrix[pos][MATRIX_C_ENTRY_COMPUTED_C_VGROUP], final_computed_c_value))
+        
+        return move_animations, transform_animations, fade_out_animations
+    
+    def computeRowForOtherColumns(self, matrix, pos, row, col):
+        move_animations = []
+        transform_animations = []
+        fade_out_animations = []
+        
+        computed_c_value = self.temp_computed_c_values[pos]
+        arcPath = ArcBetweenPoints(self.text_c_value_list[pos].get_center(), matrix[pos][MATRIX_C_ENTRY_COMPUTED_C_VGROUP].get_center(), angle=PI/2)
+        move_animations.append(MoveAlongPath(self.text_c_value_list[pos], arcPath))
+        for back_col in range(col):
+            moving_point_pos = back_col + (MATRIX_ROW_COL_CT * row)
+            arcPath = ArcBetweenPoints(self.text_c_value_list[moving_point_pos].get_center(), matrix[pos][MATRIX_C_ENTRY_COMPUTED_C_VGROUP].get_center(), angle=PI/2)
+            move_animations.append(MoveAlongPath(self.text_c_value_list[moving_point_pos], arcPath))
+            
+            computed_c_value += self.temp_computed_c_values[moving_point_pos] 
+            
+            fade_out_animations.append(FadeOut(self.text_c_value_list[moving_point_pos]))
+            
+        for front_col in range(MATRIX_ROW_COL_CT - (col + 1)):
+            moving_point_pos = pos + front_col + 1
+            arcPath = ArcBetweenPoints(self.text_c_value_list[moving_point_pos].get_center(), matrix[pos][MATRIX_C_ENTRY_COMPUTED_C_VGROUP].get_center(), angle=PI/2)
+            move_animations.append(MoveAlongPath(self.text_c_value_list[moving_point_pos], arcPath))
+            
+            computed_c_value += self.temp_computed_c_values[moving_point_pos] 
+            
+            fade_out_animations.append(FadeOut(self.text_c_value_list[moving_point_pos]))
+        
+        final_computed_c_value = Text(str(computed_c_value), color=C_VALUES_COLOR, font_size=MATRIX_FONT_SIZE).move_to(matrix[pos][MATRIX_C_ENTRY_COMPUTED_C_VGROUP].get_center())
+        transform_animations.append(Transform(matrix[pos][MATRIX_C_ENTRY_COMPUTED_C_VGROUP], final_computed_c_value))
+        
+        return move_animations, transform_animations, fade_out_animations
             
