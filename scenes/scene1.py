@@ -81,7 +81,7 @@ class Scene1:
         return move_animations
     
     def createPartialMatrixC(self):
-        """_summary_
+        """Create Matrix C with moved Aij & Bij entries
 
         Returns:
             Vgroup: Matrix C with only entries Aij & Bij
