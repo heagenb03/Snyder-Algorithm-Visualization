@@ -8,6 +8,11 @@ class Scene1:
         self.RIGHT_ALINGMENT = 3.8
     
     def createTitle(self):
+        """Create Snyder's Algorithm title
+
+        Returns:
+            _type_: Manim Text object
+        """
         text = Text("Snyder's Algorithm", color=MATRIX_BG_COLOR).scale(0.75).shift(UP * 2.5 + RIGHT * 0.25)
         
         return text
