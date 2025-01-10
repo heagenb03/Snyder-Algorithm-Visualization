@@ -28,6 +28,7 @@ class Snyder(Scene):
         matrixA_scene1 = scene1.createMatrixA()
         matrixB_scene1 = scene1.createMatrixB()
         matrixC_scene1 = scene1.createMatrixC()
+        algorithm_title = scene1.createTitle()
         
         matrices = VGroup(
             matrixC_scene1,
@@ -39,6 +40,7 @@ class Snyder(Scene):
         
         matrices.move_to(ORIGIN)
         
+        self.add(algorithm_title)
         self.play(FadeIn(matrices))
         self.wait(5)
         

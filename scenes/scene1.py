@@ -1,4 +1,4 @@
-from manim import VGroup
+from manim import VGroup, Text, UP, RIGHT
 from constants import *
 from intial import Intial
 
@@ -6,6 +6,11 @@ class Scene1:
     def __init__(self):
         self.intial = Intial()
         self.RIGHT_ALINGMENT = 3.8
+    
+    def createTitle(self):
+        text = Text("Snyder's Algorithm", color=MATRIX_BG_COLOR).scale(0.75).shift(UP * 2.5 + RIGHT * 0.25)
+        
+        return text
     
     def createMatrixA(self):
         """Create Matrix A
