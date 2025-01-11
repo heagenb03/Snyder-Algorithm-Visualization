@@ -16,7 +16,7 @@ View the animation in the local [Cannon.mp4](https://github.com/heagenb03/Cannon
 ## Authors
 
 Heagen Bell 
-[LinkedIn](www.linkedin.com/in/heagen-bell)
+[LinkedIn](https://www.linkedin.com/in/heagen-bell)
 
 ## License
 
