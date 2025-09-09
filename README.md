@@ -11,6 +11,10 @@ View the animation on [Youtube](https://youtu.be/OaqeA9JvtQ8) or view the animat
 * Change desired variables in [constants.py](https://github.com/heagenb03/Snyder-Algorithm-Visualization/blob/main/constants.py)
 * Run using desired output settings found in [Manim Docs](https://docs.manim.community/en/stable/tutorials/output_and_config.html)
 
+## Watch Other Similar Algorithms
+* [Cannon Algorithm](https://github.com/heagenb03/Cannon-Algorithm-Visualization)
+* [Fox Algorithm](https://github.com/heagenb03/Fox-Algorithm-Visualization)
+
 ## Authors
 
 Heagen Bell 
